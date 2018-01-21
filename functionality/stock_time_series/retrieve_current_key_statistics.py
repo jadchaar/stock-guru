@@ -1,31 +1,24 @@
 import requests
-import os
-from dotenv import load_dotenv, find_dotenv
 from datetime import datetime
-# from ..helpers.utils import checkTickerSymbolValidity
-
-load_dotenv(find_dotenv())
-
-ALPHA_VANTAGE_API_KEY = os.environ.get('ALPHA_VANTAGE_API_KEY')
 
 
 def getCurrentStockPrice(ticker, roundPrice=True):
-    API_URL = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={}&interval=1min&outputsize=compact&apikey={}'.format(ticker, ALPHA_VANTAGE_API_KEY)
-    response = requests.get(API_URL).json()
-    lastUpdated = response['Meta Data']['3. Last Refreshed']
-    latestPrice = float(response['Time Series (1min)'][lastUpdated]['4. close'])
-    if not roundPrice:
-        return latestPrice
-    return round(latestPrice, 2)
+    API_URL = f'https://api.iextrading.com/1.0/stock/{ticker}/quote'
+    response = requests.get(API_URL)
+    if response.status_code == requests.codes.ok:
+        responseData = response.json()
+    latestPrice = float(responseData['latestPrice'])
+    return round(latestPrice, 2) if roundPrice else latestPrice
 
 
 def getKeyStatistics(ticker, roundStats=True):
-    API_URL = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={}&interval=1min&outputsize=compact&apikey={}'.format(ticker, ALPHA_VANTAGE_API_KEY)
+    API_URL = 'https://api.iextrading.com/1.0/stock/{}/quote'.format(ticker)
     response = requests.get(API_URL).json()
 
     keyStats = dict()
 
-    lastUpdated = response['Meta Data']['3. Last Refreshed']
+    # update time of latestPrice in milliseconds since midnight Jan 1, 1970
+    lastUpdated = datetime.fromtimestamp(int(str(response['latestUpdate'])[:10]))
 
     if roundStats:
         keyStats['latestPrice'] = round(float(response['Time Series (Daily)'][lastUpdated[:10]]['4. close']), 2)

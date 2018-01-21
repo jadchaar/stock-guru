@@ -1,5 +1,7 @@
-import json
-from os.path import join, dirname
+# import json
+import requests
+from operator import itemgetter
+# from os.path import join, dirname
 
 '''
     Returns True if the symbol is VALID
@@ -8,13 +10,14 @@ from os.path import join, dirname
 
 
 def checkTickerSymbolValidity(input):
-    symbolsPath = join(dirname(__file__), 'symbols.json')
-    # with open('symbols.json', 'r') as f:
-    with open(symbolsPath, 'r') as f:
-        symbols = json.load(f)
-        if symbols.get(input) is None:
-            return False
-        return True
+    API_URL = 'https://api.iextrading.com/1.0/ref-data/symbols'
+    response = requests.get(API_URL)
+    if response.status_code == requests.codes.ok:
+        responseData = response.json()
+        # Check if symbol is available in API
+        return input in map(itemgetter('symbol'), responseData)
+    # Raise error if API cannot be reached
+    response.raise_for_status()
 
 
 def checkTickerNameValidity():

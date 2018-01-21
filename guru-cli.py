@@ -8,8 +8,8 @@ import click
 @click.argument('action')
 def getCurrentPriceForTicker(ticker, action):
     """ Gets the current stock price for the specified ticker SYMBOL """
-    if not utils.checkTickerSymbolValidity(ticker.lower()):
-        click.echo('Invalid ticker symbol!')
+    if not utils.checkTickerSymbolValidity(ticker.upper()):
+        return click.echo('Invalid ticker symbol!')
 
     if action == 'gcp':
         # Get Current Price
