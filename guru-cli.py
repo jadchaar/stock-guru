@@ -21,9 +21,11 @@ def getCurrentPriceForTicker(ticker, action):
         click.echo('Retrieving data...')
         keyStats = retrieve_current_key_statistics.getKeyStatistics(ticker)
         click.echo(f'Key Statistics for {ticker.upper()}')
-        click.echo(f'Last Updated: {keyStats["lastRefreshed"]}')
+        click.echo(f'Last Updated: {keyStats["lastUpdated"]}')
         click.echo(f'Latest Price: {keyStats["latestPrice"]}')
+        click.echo(f'P/E Ratio: {keyStats["peRatio"]}')
         click.echo(f'Volume: {keyStats["latestVolume"]}')
+        click.echo(f'Market Cap: {keyStats["marketCap"]}')
     else:
         click.echo('Invalid action. Please try again.')
 

@@ -2,36 +2,34 @@ import requests
 from datetime import datetime
 
 
-def getCurrentStockPrice(ticker, roundPrice=True):
+def getCurrentStockPrice(ticker):
     API_URL = f'https://api.iextrading.com/1.0/stock/{ticker}/quote'
     response = requests.get(API_URL)
     if response.status_code == requests.codes.ok:
         responseData = response.json()
-    latestPrice = float(responseData['latestPrice'])
-    return round(latestPrice, 2) if roundPrice else latestPrice
+    else:
+        response.raise_for_status()
+    return responseData['latestPrice']
 
 
 def getKeyStatistics(ticker, roundStats=True):
-    API_URL = 'https://api.iextrading.com/1.0/stock/{}/quote'.format(ticker)
-    response = requests.get(API_URL).json()
+    API_URL = f'https://api.iextrading.com/1.0/stock/{ticker}/quote'
+    response = requests.get(API_URL)
+    if response.status_code == requests.codes.ok:
+        responseData = response.json()
+    else:
+        response.raise_for_status()
 
     keyStats = dict()
 
     # update time of latestPrice in milliseconds since midnight Jan 1, 1970
-    lastUpdated = datetime.fromtimestamp(int(str(response['latestUpdate'])[:10]))
-
-    if roundStats:
-        keyStats['latestPrice'] = round(float(response['Time Series (Daily)'][lastUpdated[:10]]['4. close']), 2)
-    else:
-        keyStats['latestPrice'] = float(response['Time Series (Daily)'][lastUpdated[:10]]['4. close'])
-
-    try:
-        keyStats['lastRefreshed'] = datetime.strptime(lastUpdated, "%Y-%m-%d %H:%M:%S").strftime("%-I:%-M%p, %B %-d, %Y")
-    except ValueError:
-        # Market is closed
-        keyStats['lastRefreshed'] = datetime.strptime(lastUpdated, "%Y-%m-%d").strftime("4:00PM, %B %-d, %Y (U.S. Markets are Closed)")
-
-    keyStats['latestVolume'] = response['Time Series (Daily)'][lastUpdated[:10]]['5. volume']
+    # keyStats['lastUpdated'] = datetime.fromtimestamp(int(str(responseData['latestUpdate'])[:10]))
+    keyStats['lastUpdated'] = datetime.fromtimestamp(int(str(responseData['latestUpdate'])[:10])).strftime("%-I:%M%p, %B %-d, %Y")
+    keyStats['sector'] = responseData['sector']
+    keyStats['latestPrice'] = responseData['latestPrice']
+    keyStats['latestVolume'] = responseData['latestVolume']
+    keyStats['marketCap'] = responseData['marketCap']
+    keyStats['peRatio'] = responseData['peRatio']
 
     return keyStats
 

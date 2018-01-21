@@ -1,7 +1,5 @@
-# import json
 import requests
 from operator import itemgetter
-# from os.path import join, dirname
 
 '''
     Returns True if the symbol is VALID
