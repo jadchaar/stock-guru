@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 import requests
 from flask import Flask, request
+import pprint
 
 load_dotenv(find_dotenv())
 
@@ -118,7 +119,9 @@ def handlePostback(sender_psid, received_postback):
 def webhook():
     # Parse the request body from the POST
     body = request.get_json()
-    print(body)
+    # print(body)
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(body)
 
     # Check the webhook event is from a Page subscription
     if body['object'] == 'page':
