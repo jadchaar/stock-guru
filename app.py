@@ -61,7 +61,7 @@ def handleMessage(sender_psid, received_message):
     if received_message['text']:
         # Create the payload for a basic text message
         response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
-    elif received_message.attachments:
+    elif received_message['attachments']:
         # Gets the URL of the message attachment
         attachment_url = received_message.attachments[0]['payload']['url']
         response = {
