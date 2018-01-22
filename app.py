@@ -120,7 +120,7 @@ def webhook():
     # Parse the request body from the POST
     body = request.get_json()
     # print(body)
-    pp = pprint.PrettyPrinter(indent=4)
+    pp = pprint.PrettyPrinter()
     pp.pprint(body)
 
     # Check the webhook event is from a Page subscription
