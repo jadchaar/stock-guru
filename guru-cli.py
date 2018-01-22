@@ -13,19 +13,26 @@ def getCurrentPriceForTicker(ticker, action):
 
     if action == 'gcp':
         # Get Current Price
-        click.echo('Retrieving data...')
         currentPrice = retrieve_current_key_statistics.getCurrentStockPrice(ticker)
         click.echo(f'Latest {ticker.upper()} stock price: {currentPrice}')
     elif action == 'gks':
         # Get Key Stats
-        click.echo('Retrieving data...')
         keyStats = retrieve_current_key_statistics.getKeyStatistics(ticker)
-        click.echo(f'Key Statistics for {ticker.upper()}')
-        click.echo(f'Last Updated: {keyStats["lastUpdated"]}')
-        click.echo(f'Latest Price: {keyStats["latestPrice"]}')
-        click.echo(f'P/E Ratio: {keyStats["peRatio"]}')
-        click.echo(f'Volume: {keyStats["latestVolume"]}')
-        click.echo(f'Market Cap: {keyStats["marketCap"]}')
+        click.echo(f'{keyStats["companyName"]} ({keyStats["symbol"]}) as of {keyStats["lastUpdated"]}')
+        click.echo(f'* Latest Price: {keyStats["latestPrice"]}')
+        click.echo(f'* Previous Close: {keyStats["previousClose"]}')
+        click.echo(f'* Open: {keyStats["open"]}')
+        click.echo(f'* Day\'s Range: {keyStats["dayRange"]}')
+        click.echo(f'* 52 Week Range: {keyStats["week52Range"]}')
+        click.echo(f'* Market Cap: {keyStats["marketCap"]}')
+        click.echo(f'* Volume: {keyStats["latestVolume"]}')
+        click.echo(f'* Avg Volume: {keyStats["avgTotalVolume"]}')
+        click.echo(f'* P/E Ratio: {keyStats["peRatio"]}')
+        click.echo(f'* EPS: {keyStats["eps"]}')
+        click.echo(f'* Beta: {keyStats["beta"]}')
+        if 'dividend' in keyStats:
+            click.echo(f'* Dividend: {keyStats["dividend"]}')
+            click.echo(f'* Ex-Dividend Date: {keyStats["exDividendDate"]}')
     else:
         click.echo('Invalid action. Please try again.')
 
