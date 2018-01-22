@@ -30,7 +30,7 @@ def getKeyStatistics(ticker, roundStats=True):
     # Combine stats and quote data
     responseData = {**statsData, **quoteData}
 
-    keyStats = dict()
+    keyStats = {}
 
     # update time of latestPrice in milliseconds since midnight Jan 1, 1970
     # keyStats['lastUpdated'] = datetime.fromtimestamp(int(str(responseData['latestUpdate'])[:10]))
