@@ -56,7 +56,7 @@ def getKeyStatistics(ticker, roundStats=True):
         keyStats['exDividendDate'] = str(responseData['exDividendDate'])[:10]
     # Need to look into this stat more
     # keyStats['ytdReturn'] = responseData['ytdChange']
-    
+
     return keyStats
 
 
