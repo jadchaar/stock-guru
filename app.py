@@ -45,9 +45,11 @@ def callSendAPI(sender_psid, response):
     request_body = {'recipient': {'id': sender_psid}, 'message': response}
 
     # Send the HTTP request to the Messenger Platform
-    r = requests.post('https://graph.facebook.com/v2.6/me/messages', data={
-        'access_token': PAGE_ACCESS_TOKEN
-    }, json=request_body)
+    # r = requests.post('https://graph.facebook.com/v2.6/me/messages', data={
+    #     'access_token': PAGE_ACCESS_TOKEN
+    # }, json=request_body)
+    API_URL = f'https://graph.facebook.com/v2.6/me/messages?access_token={PAGE_ACCESS_TOKEN}'
+    r = requests.post(API_URL, json=request_body)
 
     if r.status_code != requests.codes.ok:
         print(f'The POST request encountered an error: {r.text} ({r.status_code})')
