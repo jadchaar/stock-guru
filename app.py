@@ -127,6 +127,7 @@ def webhook():
     if body['object'] == 'page':
         # Iterate over each entry - there may be multiple if batched
         for entry in body['entry']:
+            pp.pprint(entry)
             # Get the webhook event. entry.messaging is an array, but
             # will only ever contain one event, so we get index 0
             webhook_event = entry['messaging'][0]
