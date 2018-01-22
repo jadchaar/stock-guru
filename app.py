@@ -58,12 +58,14 @@ def callSendAPI(sender_psid, response):
 def handleMessage(sender_psid, received_message):
     response = {}
     # Check if the message contains text
-    if received_message['text']:
+    # if received_message['text']:
+    if 'text' in received_message:
         # Create the payload for a basic text message
         response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
-    elif received_message['attachments']:
+    # elif received_message['attachments']:
+    elif 'attachments' in received_message:
         # Gets the URL of the message attachment
-        attachment_url = received_message.attachments[0]['payload']['url']
+        attachment_url = received_message['attachments'][0]['payload']['url']
         response = {
             'attachment': {
                 'type': 'template',
@@ -89,6 +91,8 @@ def handleMessage(sender_psid, received_message):
                 }
             }
         }
+    else:
+        print('Error: Invalid message type!')
 
     # Sends the response message
     callSendAPI(sender_psid, response)
@@ -132,7 +136,7 @@ def webhook():
             # Check if the event is a message or postback and
             # pass the event to the appropriate handler function
             if webhook_event['message']:
-                handleMessage(sender_psid, webhook_event['message'])       
+                handleMessage(sender_psid, webhook_event['message'])   
             elif webhook_event['postback']:
                 handlePostback(sender_psid, webhook_event['postback'])
 
