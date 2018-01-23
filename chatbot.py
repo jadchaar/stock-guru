@@ -60,7 +60,10 @@ def getKeyStats(ticker):
     keyStats = retrieve_current_key_statistics.getKeyStatistics(ticker)
     if keyStats is None:
         return
-    payload = f'''{keyStats["companyName"]} ({keyStats["symbol"]}) as of {keyStats["lastUpdated"]}
+
+    # How to add formatting to Messenger text
+    # https://www.facebook.com/help/147348452522644
+    payload = f'''*{keyStats["companyName"]} ({keyStats["symbol"]}) as of {keyStats["lastUpdated"]}*
     * Latest Price: {keyStats["latestPrice"]}
     * Previous Close: {keyStats["previousClose"]}
     * Open: {keyStats["open"]}
@@ -74,9 +77,7 @@ def getKeyStats(ticker):
     * Beta: {keyStats["beta"]}
     '''
     if 'dividend' in keyStats:
-        payload += f'''* Dividend: {keyStats["dividend"]}
-        * Ex-Dividend Date: {keyStats["exDividendDate"]}
-        '''
+        payload += f'* Dividend: {keyStats["dividend"]}\n* Ex-Dividend Date: {keyStats["exDividendDate"]}'
     return payload
 
 
@@ -88,7 +89,11 @@ def handleMessage(sender_psid, received_message):
         # Create the payload for a basic text message
         # response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
         if 'is_echo' not in received_message:
-            response['text'] = getKeyStats(f'{received_message["text"]}')
+            ticker = utils.cleanupAndStandardizeTicker(received_message["text"])
+            if not utils.checkTickerSymbolValidity(ticker):
+                response['text'] = getKeyStats(ticker)
+            else:
+                response['text'] = 'Invalid ticker symbol!'
     else:
         errorMsg = 'Error: Invalid message type!'
         response['text'] = errorMsg
