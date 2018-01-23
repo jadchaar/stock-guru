@@ -1,11 +1,7 @@
 from dotenv import load_dotenv, find_dotenv
 import os
-import sys
-import json
-from datetime import datetime
 import requests
 from flask import Flask, request
-import pprint
 
 load_dotenv(find_dotenv())
 
