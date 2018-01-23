@@ -13,6 +13,10 @@ def getCurrentStockPrice(ticker):
 
 
 def getKeyStatistics(ticker, roundStats=True):
+    # Max stock ticker length
+    if len(ticker) > 5:
+        return
+
     API_URL = f'https://api.iextrading.com/1.0/stock/{ticker}/quote'
     response = requests.get(API_URL)
     if response.status_code == requests.codes.ok:

@@ -81,13 +81,19 @@ def getKeyStats(ticker):
 
 
 def handleMessage(sender_psid, received_message):
-    print('$$$$$$$$$$$$$$$$$$$$$$$')
-    print('DEBUG: HANDLING MESSAGE')
-    print('$$$$$$$$$$$$$$$$$$$$$$$')
+    # print('$$$$$$$$$$$$$$$$$$$$$$$')
+    # print('DEBUG: HANDLING MESSAGE')
+    # print('$$$$$$$$$$$$$$$$$$$$$$$')
     response = {}
     # Check if the message contains text
     # if received_message['text']:
     if 'text' in received_message:
+
+        print('$$$$$$$$$$$$$$$$$$$$$$$')
+        print('DEBUG: RECEIVED MESSAGE')
+        print(received_message)
+        print('$$$$$$$$$$$$$$$$$$$$$$$')
+
         # Create the payload for a basic text message
         # response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
         response['text'] = getKeyStats(f'{received_message["text"]}')
