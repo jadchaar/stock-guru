@@ -56,27 +56,28 @@ def callSendAPI(sender_psid, response):
 
 
 def getKeyStats(ticker):
-        # Get Key Stats
-        keyStats = retrieve_current_key_statistics.getKeyStatistics(ticker)
-        payload = f'''
-        {keyStats["companyName"]} ({keyStats["symbol"]}) as of {keyStats["lastUpdated"]}
-        * Latest Price: {keyStats["latestPrice"]}
-        * Previous Close: {keyStats["previousClose"]}
-        * Open: {keyStats["open"]}
-        * Day\'s Range: {keyStats["dayRange"]}
-        * 52 Week Range: {keyStats["week52Range"]}
-        * Market Cap: {keyStats["marketCap"]}
-        * Volume: {keyStats["latestVolume"]}
-        * Avg Volume: {keyStats["avgTotalVolume"]}
-        * P/E Ratio: {keyStats["peRatio"]}
-        * EPS: {keyStats["eps"]}
-        * Beta: {keyStats["beta"]}
+    # Get Key Stats
+    keyStats = retrieve_current_key_statistics.getKeyStatistics(ticker)
+    payload = f'''
+    {keyStats["companyName"]} ({keyStats["symbol"]}) as of {keyStats["lastUpdated"]}
+    * Latest Price: {keyStats["latestPrice"]}
+    * Previous Close: {keyStats["previousClose"]}
+    * Open: {keyStats["open"]}
+    * Day\'s Range: {keyStats["dayRange"]}
+    * 52 Week Range: {keyStats["week52Range"]}
+    * Market Cap: {keyStats["marketCap"]}
+    * Volume: {keyStats["latestVolume"]}
+    * Avg Volume: {keyStats["avgTotalVolume"]}
+    * P/E Ratio: {keyStats["peRatio"]}
+    * EPS: {keyStats["eps"]}
+    * Beta: {keyStats["beta"]}
+    '''
+    if 'dividend' in keyStats:
+        payload += f'''
+        \n* Dividend: {keyStats["dividend"]}
+        * Ex-Dividend Date: {keyStats["exDividendDate"]}
         '''
-        if 'dividend' in keyStats:
-            payload += f'''
-            \n* Dividend: {keyStats["dividend"]}
-            * Ex-Dividend Date: {keyStats["exDividendDate"]}
-            '''
+    return payload
 
 
 def handleMessage(sender_psid, received_message):
