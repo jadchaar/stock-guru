@@ -86,7 +86,7 @@ def handleMessage(sender_psid, received_message):
     if 'text' in received_message:
         # Create the payload for a basic text message
         # response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
-        response['text'] = getKeyStats(received_message)
+        response['text'] = getKeyStats(f'{received_message["text"]})
     else:
         errorMsg = 'Error: Invalid message type!'
         response['text'] = errorMsg
