@@ -73,7 +73,8 @@ def handleMessage(sender_psid, received_message):
         print('-------------------------')
 
         # Gets the URL of the message attachment
-        attachment_url = received_message['attachments'][0]['payload']['url']
+        # attachment_url = received_message['attachments'][0]['payload']['url']
+        attachment_url = received_message['attachments'][0]['payload']['elements'][0]['image_url']
         response = {
             'attachment': {
                 'type': 'template',
