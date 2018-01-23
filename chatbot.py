@@ -60,41 +60,36 @@ def getKeyStats(ticker):
     keyStats = retrieve_current_key_statistics.getKeyStatistics(ticker)
     if keyStats is None:
         return
-    payload = f'{keyStats["companyName"]} ({keyStats["symbol"]}) as of {keyStats["lastUpdated"]}\n'
-    payload += f'* Latest Price: {keyStats["latestPrice"]}\n'
-    payload += f'* Previous Close: {keyStats["previousClose"]}\n'
-    payload += f'* Open: {keyStats["open"]}\n'
-    payload += f'* Day\'s Range: {keyStats["dayRange"]}\n'
-    payload += f'* 52 Week Range: {keyStats["week52Range"]}\n'
-    payload += f'* Market Cap: {keyStats["marketCap"]}\n'
-    payload += f'* Volume: {keyStats["latestVolume"]}\n'
-    payload += f'* Avg Volume: {keyStats["avgTotalVolume"]}\n'
-    payload += f'* P/E Ratio: {keyStats["peRatio"]}\n'
-    payload += f'* EPS: {keyStats["eps"]}\n'
-    payload += f'* Beta: {keyStats["beta"]}\n'
+    payload = f'''{keyStats["companyName"]} ({keyStats["symbol"]}) as of {keyStats["lastUpdated"]}
+    * Latest Price: {keyStats["latestPrice"]}
+    * Previous Close: {keyStats["previousClose"]}
+    * Open: {keyStats["open"]}
+    * Day\'s Range: {keyStats["dayRange"]}
+    * 52 Week Range: {keyStats["week52Range"]}
+    * Market Cap: {keyStats["marketCap"]}
+    * Volume: {keyStats["latestVolume"]}
+    * Avg Volume: {keyStats["avgTotalVolume"]}
+    * P/E Ratio: {keyStats["peRatio"]}
+    * EPS: {keyStats["eps"]}
+    * Beta: {keyStats["beta"]}
+    '''
     if 'dividend' in keyStats:
-        payload += f'* Dividend: {keyStats["dividend"]}\n'
-        payload += f'* Ex-Dividend Date: {keyStats["exDividendDate"]}\n'
+        payload += f'''\n
+        * Dividend: {keyStats["dividend"]}
+        * Ex-Dividend Date: {keyStats["exDividendDate"]}
+        '''
     return payload
 
 
 def handleMessage(sender_psid, received_message):
-    # print('$$$$$$$$$$$$$$$$$$$$$$$')
-    # print('DEBUG: HANDLING MESSAGE')
-    # print('$$$$$$$$$$$$$$$$$$$$$$$')
     response = {}
+
     # Check if the message contains text
-    # if received_message['text']:
     if 'text' in received_message:
-
-        print('$$$$$$$$$$$$$$$$$$$$$$$')
-        print('DEBUG: RECEIVED MESSAGE')
-        print(received_message)
-        print('$$$$$$$$$$$$$$$$$$$$$$$')
-
         # Create the payload for a basic text message
         # response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
-        response['text'] = getKeyStats(f'{received_message["text"]}')
+        if 'is_echo' not in received_message:
+            response['text'] = getKeyStats(f'{received_message["text"]}')
     else:
         errorMsg = 'Error: Invalid message type!'
         response['text'] = errorMsg

@@ -13,7 +13,7 @@ def getCurrentStockPrice(ticker):
 
 
 def getKeyStatistics(ticker, roundStats=True):
-    # Max stock ticker length
+    # Sanity check for max stock ticker length
     if len(ticker) > 5:
         return
 
