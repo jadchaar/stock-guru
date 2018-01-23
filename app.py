@@ -121,7 +121,7 @@ def webhook():
     body = request.get_json()
     # print(body)
     pp = pprint.PrettyPrinter()
-    pp.pprint(body)
+    # pp.pprint(body)
 
     # Check the webhook event is from a Page subscription
     if body['object'] == 'page':
