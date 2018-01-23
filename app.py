@@ -63,63 +63,10 @@ def handleMessage(sender_psid, received_message):
     if 'text' in received_message:
         # Create the payload for a basic text message
         response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
-    # elif received_message['attachments']:
-    elif 'attachments' in received_message:
-
-        print('-------------------------')
-        print('DEBUG')
-        pp = pprint.PrettyPrinter()
-        pp.pprint(received_message)
-        print('-------------------------')
-
-        # Gets the URL of the message attachment
-        # attachment_url = received_message['attachments'][0]['payload']['url']
-        attachment_url = received_message['attachments'][0]['payload']['elements'][0]['image_url']
-        response = {
-            'attachment': {
-                'type': 'template',
-                'payload': {
-                    'template_type': 'generic',
-                    'elements': [{
-                        'title': 'Is this the right picture?',
-                        'subtitle': 'Tap a button to answer.',
-                        'image_url': attachment_url,
-                        'buttons': [
-                            {
-                                'type': 'postback',
-                                'title': 'Yes!',
-                                'payload': 'yes',
-                            },
-                            {
-                                'type': 'postback',
-                                'title': 'No!',
-                                'payload': 'no',
-                            }
-                        ],
-                    }]
-                }
-            }
-        }
     else:
         print('Error: Invalid message type!')
 
     # Sends the response message
-    callSendAPI(sender_psid, response)
-
-
-def handlePostback(sender_psid, received_postback):
-    response = {}
-
-    # Get the payload for the postback
-    payload = received_postback['payload']
-
-    # Set the response based on the postback payload
-    if payload == 'yes':
-        response['text'] = 'Thanks!'
-    elif payload == 'no':
-        response['text'] = 'Oops, try sending another image.'
-
-    # Send the message to acknowledge the postback
     callSendAPI(sender_psid, response)
 
 
@@ -128,14 +75,14 @@ def webhook():
     # Parse the request body from the POST
     body = request.get_json()
     # print(body)
-    pp = pprint.PrettyPrinter()
+    # pp = pprint.PrettyPrinter()
     # pp.pprint(body)
 
     # Check the webhook event is from a Page subscription
     if body['object'] == 'page':
         # Iterate over each entry - there may be multiple if batched
         for entry in body['entry']:
-            pp.pprint(entry)
+            # pp.pprint(entry)
             # Get the webhook event. entry.messaging is an array, but
             # will only ever contain one event, so we get index 0
             webhook_event = entry['messaging'][0]
