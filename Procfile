@@ -1,1 +1,1 @@
-web: gunicorn app:app --preload --worker-class gevent
+web: gunicorn app:app --preload
