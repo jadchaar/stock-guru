@@ -77,7 +77,9 @@ def getKeyStats(ticker):
     * Beta: {keyStats["beta"]}
     '''
     if 'dividend' in keyStats:
-        payload += f'* Dividend: {keyStats["dividend"]}\n* Ex-Dividend Date: {keyStats["exDividendDate"]}'
+        payload += f'''* Dividend: {keyStats["dividend"]}
+        * Ex-Dividend Date: {keyStats["exDividendDate"]}
+        '''
     return payload
 
 
