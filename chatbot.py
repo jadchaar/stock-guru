@@ -90,7 +90,7 @@ def handleMessage(sender_psid, received_message):
         # response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
         if 'is_echo' not in received_message:
             ticker = utils.cleanupAndStandardizeTicker(received_message["text"])
-            if not utils.checkTickerSymbolValidity(ticker):
+            if utils.checkTickerSymbolValidity(ticker):
                 response['text'] = getKeyStats(ticker)
             else:
                 response['text'] = 'Invalid ticker symbol!'
