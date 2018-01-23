@@ -87,7 +87,7 @@ def webhook():
 
                 # Check if the event is a message or postback and
                 # pass the event to the appropriate handler function
-                if webhook_event['message']:
+                if 'message' in webhook_event:
                     handleMessage(sender_psid, webhook_event['message'])
 
         # Return a '200 OK' response to all events
