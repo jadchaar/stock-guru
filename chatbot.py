@@ -58,6 +58,8 @@ def callSendAPI(sender_psid, response):
 def getKeyStats(ticker):
     # Get Key Stats
     keyStats = retrieve_current_key_statistics.getKeyStatistics(ticker)
+    if keyStats is None:
+        return
     payload = f'{keyStats["companyName"]} ({keyStats["symbol"]}) as of {keyStats["lastUpdated"]}\n'
     payload += f'* Latest Price: {keyStats["latestPrice"]}\n'
     payload += f'* Previous Close: {keyStats["previousClose"]}\n'
