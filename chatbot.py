@@ -81,6 +81,9 @@ def getKeyStats(ticker):
 
 
 def handleMessage(sender_psid, received_message):
+    print('$$$$$$$$$$$$$$$$$$$$$$$')
+    print('DEBUG: HANDLING MESSAGE')
+    print('$$$$$$$$$$$$$$$$$$$$$$$')
     response = {}
     # Check if the message contains text
     # if received_message['text']:
