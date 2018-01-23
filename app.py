@@ -65,6 +65,13 @@ def handleMessage(sender_psid, received_message):
         response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
     # elif received_message['attachments']:
     elif 'attachments' in received_message:
+
+        print('-------------------------')
+        print('DEBUG')
+        pp = pprint.PrettyPrinter()
+        pp.pprint(received_message)
+        print('-------------------------')
+
         # Gets the URL of the message attachment
         attachment_url = received_message['attachments'][0]['payload']['url']
         response = {
