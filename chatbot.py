@@ -3,6 +3,9 @@ import os
 import requests
 from flask import Flask, request
 
+from functionality.stock_time_series import retrieve_current_key_statistics
+from functionality.helpers import utils
+
 load_dotenv(find_dotenv())
 
 PAGE_ACCESS_TOKEN = os.environ.get('PAGE_ACCESS_TOKEN')
@@ -52,15 +55,42 @@ def callSendAPI(sender_psid, response):
         print(f'The POST request encountered an error: {r.text} ({r.status_code})')
 
 
+def getKeyStats(ticker):
+        # Get Key Stats
+        keyStats = retrieve_current_key_statistics.getKeyStatistics(ticker)
+        payload = f'''
+        {keyStats["companyName"]} ({keyStats["symbol"]}) as of {keyStats["lastUpdated"]}
+        * Latest Price: {keyStats["latestPrice"]}
+        * Previous Close: {keyStats["previousClose"]}
+        * Open: {keyStats["open"]}
+        * Day\'s Range: {keyStats["dayRange"]}
+        * 52 Week Range: {keyStats["week52Range"]}
+        * Market Cap: {keyStats["marketCap"]}
+        * Volume: {keyStats["latestVolume"]}
+        * Avg Volume: {keyStats["avgTotalVolume"]}
+        * P/E Ratio: {keyStats["peRatio"]}
+        * EPS: {keyStats["eps"]}
+        * Beta: {keyStats["beta"]}
+        '''
+        if 'dividend' in keyStats:
+            payload += f'''
+            \n* Dividend: {keyStats["dividend"]}
+            * Ex-Dividend Date: {keyStats["exDividendDate"]}
+            '''
+
+
 def handleMessage(sender_psid, received_message):
     response = {}
     # Check if the message contains text
     # if received_message['text']:
     if 'text' in received_message:
         # Create the payload for a basic text message
-        response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
+        # response['text'] = f'You sent the message: "{received_message["text"]}". Now send me an image!'
+        response['text'] = getKeyStats(received_message)
     else:
-        print('Error: Invalid message type!')
+        errorMsg = 'Error: Invalid message type!'
+        response['text'] = errorMsg
+        print(errorMsg)
 
     # Sends the response message
     callSendAPI(sender_psid, response)
